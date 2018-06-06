@@ -5,7 +5,7 @@ var mongoose = require("mongoose");
 var axios = require("axios");
 var cheerio = require("cheerio");
 var db = require("./models");
-var PORT = 3000;
+var PORT = process.env.PORT || 3000;
 var app = express();
 
 app.use(logger("dev"));
@@ -14,17 +14,20 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(express.static("public"));
 
-mongoose.connect("mongodb://localhost/week18Populater");
+mongoose.connect(process.env.MONGODB_URI);
 
 // ROUTES
 
 app.get("/scrape", function(req, res) {
   
-  axios.get("http://www.echojs.com/").then(function(response) {
+  axios.get("http://www.nytimes.com/").then(function(response) {
    
     var $ = cheerio.load(response.data);
 
-    $("article h2").each(function(i, element) {
+    $("article").each(function(i, element) {
+
+    console.log(element);
+
       var result = {};
 
       result.title = $(this)
