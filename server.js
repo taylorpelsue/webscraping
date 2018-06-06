@@ -24,14 +24,14 @@ app.get("/scrape", function(req, res) {
    
     var $ = cheerio.load(response.data);
 
-    $("article").each(function(i, element) {
+    $(".story").each(function(i, element) {
 
     console.log(element);
 
       var result = {};
 
       result.title = $(this)
-        .children("a")
+        .children("h2")
         .text();
       result.link = $(this)
         .children("a")
